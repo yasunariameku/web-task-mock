@@ -12,7 +12,7 @@
   <div class="header">
     <h1 class="site_logo"><a href="menu.html">商品管理システム</a></h1>
     <div class="user">
-      <p class="user_name">佐藤さん、こんにちは</p>
+      <p class="user_name">${name}さん、こんにちは</p>
       <form class="logout_form" action="logout.html" method="get">
         <button class="logout_btn" type="submit">
           <img src="images/ドアアイコン.png">ログアウト</button>
@@ -30,24 +30,25 @@
     </div>
   
     <div class="form_body">
-      <p class="error">エラーメッセージ</p>
-  
-      <form action="menu.html" method="get">
+    
+      <c:if test="${not empty msg}"><p class="error">${msg}</p></c:if>
+      
+      <form action="RegisterServlet" method="post">
         <fieldset class="label-130">
           <div>
             <label class="required">商品ID</label>
-            <input type="text" name="loginId" class="base-text">
-            <span class="error">エラーメッセージ</span>
+            <input type="text" name="productId" class="base-text">
+            <c:if test="${not empty id_msg}"><p class="error">${id_msg}</p></c:if>
           </div>
           <div>
             <label class="required">商品名</label>
-            <input type="text" name="userName" class="base-text">
-            <span class="error">エラーメッセージ</span>
+            <input type="text" name="productName" class="base-text">
+            <c:if test="${not empty name_msg}"><p class="error">${name_msg}</p></c:if>
           </div>
           <div>
             <label class="required">単価</label>
-            <input type="text" name="tel" class="base-text">
-            <span class="error">エラーメッセージ</span>
+            <input type="text" name="price" class="base-text">
+            <c:if test="${not empty price_msg}"><p class="error">${price_msg}</p></c:if>
           </div>
           <div class="select_block">
             <label class="required">カテゴリ</label>
@@ -71,7 +72,7 @@
         </fieldset>
         <div class="btns">
           <button type="button" onclick="openModal()" class="basic_btn">登録</button>
-          <input type="button" onclick="location.href='./menu.html'" value="戻る" class="cancel_btn">
+          <input type="button" onclick="location.href='./menu.jsp'" value="戻る" class="cancel_btn">
         </div>
         <div id="modal">
           <p class="modal_message">登録しますか？</p>

@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import entity.Product;
 import service.SearchService;
@@ -35,35 +34,38 @@ public class SearchServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		
-		
+		//文字化け対策
+		request.setCharacterEncoding("UTF-8");
 
-		String searchStr = request.getParameter("search");
+		String searchWord = request.getParameter("search");
 		
 		List<Product> result = null;
 		
-		if (searchStr.equals("")) {
+		if (searchWord.equals("")) {
 			//空文字の時は、全レコードの取得。
 			//System.out.println("空文字です");
 			
 			result = new SearchService().findAll();
 			
+			request.setAttribute("result", result);
 			
+			request.getRequestDispatcher("menu.jsp").forward(request, response);
 			
-			
-			
-		}else {
+		}else if (!(searchWord.equals(""))) {
 			//何かしら入力された値があるなら、商品名、カテゴリー名に部分一致したレコードを取得する。
 			//System.out.println(searchStr);
 			
-			result = new SearchService().find();
+			result = new SearchService().find(searchWord);
+			
+			request.setAttribute("result", result);
+			
+			request.getRequestDispatcher("menu.jsp").forward(request, response);
 		}
-		
-		
-		
-		String name = null;
-		
-		HttpSession session = request.getSession(true);
-	
+
+			
+			
+			
+				
 		
 	}
 

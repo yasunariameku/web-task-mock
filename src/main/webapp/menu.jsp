@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,7 @@
   <div id="app">
 
     <div class="header">
-      <h1 class="site_logo"><a href="menu.html">商品管理システム</a></h1>
+      <h1 class="site_logo"><a href="menu.jsp">商品管理システム</a></h1>
       <div class="user">
         <p class="user_name">${name} こんにちは</p>
         <form class="logout_form" action="logout" method="get">
@@ -24,7 +25,7 @@
 
     <hr>
 
-    <div class="btn"><a class="basic_btn regist" href="insert.html">新規登録</a></div>
+    <div class="btn"><a class="basic_btn regist" href="insert.jsp">新規登録</a></div>
     <p>成功メッセージ</p>
     
     <!-- 検索機能 -->
@@ -56,15 +57,17 @@
         </tr>
       </thead>
       <tbody>
-        <template v-for="product in products">
+        <c:forEach var="result" items="${result}" varStatus="status">
           <tr>
-            <td>{{ product.ID }}</td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.price }}</td>
-            <td>{{ product.category }}</td>
-            <td><a class="detail_btn" href="./detail.html">詳細</a></td>
+            <td><c:out value="${result.id}"/></td>
+            <td><c:out value="${result.product_id}"/></td>
+            <td><c:out value="${result.name}"/></td>
+            <td><c:out value="${result.price}"/></td>
+            <td><c:out value="${result.category}"/></td>
+            <td><c:out value="${result.description}"/></td>
+            <td><a class="detail_btn" href="./detail.jsp">詳細</a></td>
           </tr>
-        </template>
+		</c:forEach>
       </tbody>
     </table>
   </div>

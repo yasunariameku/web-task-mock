@@ -22,11 +22,11 @@ public class SearchService {
         	//↑で引数の値を受け取れている。
 
         	
-        	Product p = new Product();
+        	//Product p = new Product();
         	//UserDaoのインスタンスを生成
         	ProductDao productDao = new ProductDao(conn);
-        	//ProductDaoのインスタンスメソッドのfindByIdメソッドを呼び出す
-        	product = productDao.findAll(p);
+        	//ProductDaoのインスタンスメソッドのfindAllメソッドを呼び出す
+        	product = productDao.findAll();
         	
         	//System.out.println(user.get(0).getName());
 
@@ -39,20 +39,18 @@ public class SearchService {
     }
 	
 	
-	public List<Product> find() {
+	public List<Product> find(String word) {
         try (Connection conn = DbUtil.getConnection()) {
         	
-            //System.out.println(login_id);
+            //System.out.println(word);
         	//↑で引数の値を受け取れている。
-
         	
-        	Product p = new Product();
         	//UserDaoのインスタンスを生成
         	ProductDao productDao = new ProductDao(conn);
         	//ProductDaoのインスタンスメソッドのfindByIdメソッドを呼び出す
-        	product = productDao.findAll(p);
+        	product = productDao.find(word);
         	
-        	//System.out.println(user.get(0).getName());
+        	//System.out.println(product.get(0));
 
             return product;
         } catch (Exception e) {
@@ -60,6 +58,6 @@ public class SearchService {
         }
 
         return product;
-    }
+	}
 
 }

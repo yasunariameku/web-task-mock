@@ -25,24 +25,16 @@ public class UserDao {
 		
 			List<User> list = new ArrayList<>();
 			
-			//System.out.println(product_id);
 	    	
 	    	try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_WHERE_USER_ID)) {
 	            stmt.setString(1, p.getLogin_id());
 	            stmt.setString(2, p.getPassword());
 
 	            ResultSet rs = stmt.executeQuery();
-	            
-	            //System.out.println(p.getLogin_id());
-	            //System.out.println(p.getPassword());
 
 	
 	            while (rs.next()) {
-	            	//System.out.println(p.getLogin_id());
-	            	//System.out.println(p.getPassword());
 	                list.add(new User(rs.getInt("id"),rs.getString("login_id"), rs.getString("password"),rs.getString("name"), rs.getInt("role")));
-	                //System.out.println(list.get(0).getName());
-	                
 	            }
 	        } catch (SQLException e) {
 	            throw new RuntimeException(e);

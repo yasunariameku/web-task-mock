@@ -59,6 +59,9 @@ public class LoginServlet extends HttpServlet {
 		List<User> result = null;
 		
 		String name = null;
+		String idMatch = null;
+		String passMatch = null;
+	
 		
 		HttpSession session = request.getSession(true);
 	
@@ -76,15 +79,23 @@ public class LoginServlet extends HttpServlet {
 		
 		if (login_id.equals("") || pass.equals("")) {
 	        request.getRequestDispatcher("/index.jsp").forward(request, response);
+	        
 		}else {
 			result = (List<User>) new LoginService().findByUser(login_id, pass);
 			
-			name = result.get(0).getName();
+			//System.out.println(result.get(0).getName());
 			
-			session.setAttribute("name", name);
-	        
-	        
-	        //request.setAttribute("name", name);
+			if (result.get(0).getLogin_id().contains(login_id) == false || result.get(0).getPassword().contains(pass) == false) {
+				request.setAttribute("msg", "idまたはpassが間違っています");
+				request.getRequestDispatcher("index.jsp").forward(request, response);
+			}else {
+				//System.out.println(result.get(0));
+				
+				name = result.get(0).getName();
+				session.setAttribute("name", name);
+				request.getRequestDispatcher("menu.jsp").forward(request, response);
+			}
+		
 	     
 	        request.getRequestDispatcher("menu.jsp").forward(request, response);
 
