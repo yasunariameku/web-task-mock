@@ -35,7 +35,7 @@
     </form>
 
     <table>
-        <div class="caption"><p>検索結果：10件</p></div>
+        <div class="caption"><p>検索結果：${result.size()}件</p></div>
         <div class="order">
           <select class="base-text">
             <option>並び替え</option>
@@ -59,13 +59,11 @@
       <tbody>
         <c:forEach var="result" items="${result}" varStatus="status">
           <tr>
-            <td><c:out value="${result.id}"/></td>
             <td><c:out value="${result.product_id}"/></td>
             <td><c:out value="${result.name}"/></td>
             <td><c:out value="${result.price}"/></td>
             <td><c:out value="${result.category}"/></td>
-            <td><c:out value="${result.description}"/></td>
-            <td><a class="detail_btn" href="./detail.jsp">詳細</a></td>
+            <td><a class="detail_btn" href="DitailServlet?id=${result.id}">詳細</a></td>
           </tr>
 		</c:forEach>
       </tbody>

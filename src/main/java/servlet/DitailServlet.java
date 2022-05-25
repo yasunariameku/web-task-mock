@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,17 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entity.Product;
+import service.SearchService;
+
 /**
- * Servlet implementation class LogoutServlet
+ * Servlet implementation class DitailServlet
  */
-@WebServlet("/logout")
-public class LogoutServlet extends HttpServlet {
+@WebServlet("/DitailServlet")
+public class DitailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LogoutServlet() {
+    public DitailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,14 +34,24 @@ public class LogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		String result_idStr = request.getParameter("id");
+		
+		int result_id = Integer.parseInt(result_idStr);
+		
 		HttpSession session = request.getSession();
 		
-		session.getAttribute("name");
+		List<Product> result = null;
+
 		
-		//sessionの破棄
-		session.invalidate();
+		result = new SearchService().findById(result_id);
 		
-		request.getRequestDispatcher("logout.jsp").forward(request, response);
+		request.setAttribute("result", result);
+		
+		session.setAttribute("result", result);
+		
+		request.getRequestDispatcher("detail.jsp").forward(request, response);
+		
 		
 	}
 

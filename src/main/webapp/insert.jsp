@@ -72,7 +72,7 @@
         </fieldset>
         <div class="btns">
           <button type="button" onclick="openModal()" class="basic_btn">登録</button>
-          <input type="button" onclick="location.href='./menu.jsp'" value="戻る" class="cancel_btn">
+          <input type="button" onclick="location.href='Search?search='" value="戻る" class="cancel_btn">
         </div>
         <div id="modal">
           <p class="modal_message">登録しますか？</p>

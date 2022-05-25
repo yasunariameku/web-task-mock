@@ -15,6 +15,7 @@ public class Product {
 	
 	//登録するときに使ったコンストラクター
 	public Product(Integer product_id, Integer category_id, String name, Integer price, String description) {
+		
 		this.product_id = product_id;
 		this.category_id = category_id;
 		this.name = name;
@@ -22,8 +23,7 @@ public class Product {
 		this.description = description;
 	}
 
-	public Product(Integer id, Integer product_id,  String name, Integer price, String category, String description) {
-		
+	public Product(Integer id,Integer product_id,  String name, Integer price, String category, String description) {
 		this.id = id;
 	    this.product_id = product_id;
 	    this.category = category;

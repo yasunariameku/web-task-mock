@@ -15,22 +15,19 @@ public class SearchService {
 	
 	List<Product> product = null;
 	
+	
+	
+	//全件取得
 	public List<Product> findAll() {
         try (Connection conn = DbUtil.getConnection()) {
         	
-            //System.out.println(login_id);
-        	//↑で引数の値を受け取れている。
-
-        	
-        	//Product p = new Product();
-        	//UserDaoのインスタンスを生成
+        	//ProductDaoのインスタンスを生成
         	ProductDao productDao = new ProductDao(conn);
         	//ProductDaoのインスタンスメソッドのfindAllメソッドを呼び出す
         	product = productDao.findAll();
         	
-        	//System.out.println(user.get(0).getName());
-
             return product;
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,26 +35,43 @@ public class SearchService {
         return product;
     }
 	
-	
+	//条件を指定しての取得
 	public List<Product> find(String word) {
         try (Connection conn = DbUtil.getConnection()) {
         	
-            //System.out.println(word);
-        	//↑で引数の値を受け取れている。
-        	
-        	//UserDaoのインスタンスを生成
+        	//ProductDaoのインスタンスを生成
         	ProductDao productDao = new ProductDao(conn);
         	//ProductDaoのインスタンスメソッドのfindByIdメソッドを呼び出す
         	product = productDao.find(word);
         	
-        	//System.out.println(product.get(0));
-
             return product;
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return product;
 	}
+	
+	
+	//商品詳細の取得
+	public List<Product> findById(Integer id) {
+        try (Connection conn = DbUtil.getConnection()) {
+        	
+        	//ProductDaoのインスタンスを生成
+        	ProductDao productDao = new ProductDao(conn);
+        	//ProductDaoのインスタンスメソッドのfindByIdメソッドを呼び出す
+        	product = productDao.findById(id);
+        	
+            return product;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return product;
+	}
+	
+	//
 
 }

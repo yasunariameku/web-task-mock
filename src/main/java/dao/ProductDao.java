@@ -17,10 +17,11 @@ public class ProductDao {
 	    this.connection = connection;
 	}
 	
+	//DBから取得した値を入れるためのリスト（箱）
+	List<Product> list = new ArrayList<>();
+	
 	//全件取得
 	private static final String SQL_SELECT_ALL = "SELECT p.id,p.product_id, p.name, p.price, c.name AS category, p.description FROM products p INNER JOIN categories c ON p.category_id = c.id ORDER BY p.product_id";
-	
-	List<Product> list = new ArrayList<>();
 	
 	
 	public List<Product> findAll() {
@@ -29,7 +30,7 @@ public class ProductDao {
             ResultSet rs = stmt.executeQuery();
            
             while (rs.next()) {
-                list.add(new Product(rs.getInt("id"),rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("category"),  rs.getString("description")));
+                list.add(new Product(rs.getInt("id"),rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("category"), rs.getString("description")));
             }
             
         } catch (SQLException e) {
@@ -64,10 +65,35 @@ public class ProductDao {
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
-            	list.add(new Product(rs.getInt("id"),rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("category"),  rs.getString("description")));
+            	list.add(new Product(rs.getInt("id"), rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("category"), rs.getString("description")));
             }
             
             //System.out.println(list.size());
+            
+            return list;
+            
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        }
+    	
+    	return null;
+        
+    }
+    
+    private static final String SQL_SELECT_BY_PRODUCT_ID = "SELECT p.id, p.product_id, p.name, p.price, c.name AS category, p.description FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE p.id = ?";
+
+
+    public List<Product> findById(Integer id) {
+    	
+    	
+    	try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_PRODUCT_ID)) {
+            stmt.setInt(1, id);
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                list.add(new Product(rs.getInt("id"),rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("category"), rs.getString("description")));
+            }
             
             return list;
             
@@ -104,6 +130,40 @@ public class ProductDao {
     	
     	return null;
     }
+    
+    //登録情報の更新
+    private static final String SQL_UPDATE = "UPDATE products SET product_name = ?, price = ? WHERE product_id = ?";
+    
+    
+	public void update(Product product) {
+		try(PreparedStatement stmt = connection.prepareStatement(SQL_UPDATE)) {
+			stmt.setString(1, product.getProduct_name());
+			stmt.setInt(2, product.getPrice());
+			stmt.setInt(3, product.getProduct_id());
+			
+			stmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+    
+    
+    //登録情報の削除
+	private static final String SQL_DELETE = "DELETE FROM products WHERE product_name = ?";
+    
+    
+	public void delete(String product_name) {
+		try(PreparedStatement stmt = connection.prepareStatement(SQL_DELETE)){
+			stmt.setString(1, product_name);
+			
+			stmt.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
     
 }
 

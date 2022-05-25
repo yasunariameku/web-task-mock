@@ -85,9 +85,12 @@ public class LoginServlet extends HttpServlet {
 			
 			//System.out.println(result.get(0).getName());
 			
-			if (result.get(0).getLogin_id().contains(login_id) == false || result.get(0).getPassword().contains(pass) == false) {
+			//System.out.println(result.size());
+			
+			if (result.size() == 0) {
 				request.setAttribute("msg", "idまたはpassが間違っています");
 				request.getRequestDispatcher("index.jsp").forward(request, response);
+				
 			}else {
 				//System.out.println(result.get(0));
 				
