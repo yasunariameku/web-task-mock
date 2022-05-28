@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +36,7 @@
     </form>
 
     <table>
-        <div class="caption"><p>検索結果：${result.size()}件</p></div>
+        <div class="caption"><p>検索結果：${searchResult}件</p></div>
         <div class="order">
           <select class="base-text">
             <option>並び替え</option>
@@ -57,13 +58,13 @@
         </tr>
       </thead>
       <tbody>
-        <c:forEach var="result" items="${result}" varStatus="status">
+        <c:forEach var="resultA" items="${result}" varStatus="status">
           <tr>
-            <td><c:out value="${result.product_id}"/></td>
-            <td><c:out value="${result.name}"/></td>
-            <td><c:out value="${result.price}"/></td>
-            <td><c:out value="${result.category}"/></td>
-            <td><a class="detail_btn" href="DitailServlet?id=${result.id}">詳細</a></td>
+            <td><c:out value="${resultA.product_id}"/></td>
+            <td><c:out value="${resultA.name}"/></td>
+            <td><c:out value="${resultA.price}"/></td>
+            <td><c:out value="${resultA.category}"/></td>
+            <td><a class="detail_btn" href="DitailServlet?id=${resultA.id}">詳細</a></td>
           </tr>
 		</c:forEach>
       </tbody>

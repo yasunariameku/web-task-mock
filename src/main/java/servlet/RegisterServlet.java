@@ -62,44 +62,43 @@ public class RegisterServlet extends HttpServlet {
 		
 		//入力情報の判定
 		if(ParamUtil.isNullOrEmpty(productIdStr) == true ) {
-			request.setAttribute("productId", "IDは必須です");
+			request.setAttribute("id_msg", "IDは必須です");
 		} else {
 			productId = ParamUtil.checkAndParseInt(productIdStr);
 		}
 		
 		if(ParamUtil.isNullOrEmpty(productName) == true ) {
-			request.setAttribute("productName", "商品名は必須です");
+			request.setAttribute("name_msg", "商品名は必須です");
 		} 
 		
 		if(ParamUtil.isNullOrEmpty(priceStr) == true ) {
-			request.setAttribute("productId", "単価は必須です");
+			request.setAttribute("price_msg", "単価は必須です");
 		}else {
 			price = ParamUtil.checkAndParseInt(priceStr);
 		}
 		
-		if(ParamUtil.isNullOrEmpty(category_idStr) == true ) {
-			request.setAttribute("productId", "IDは必須です");
-		} else {
+		if(!(ParamUtil.isNullOrEmpty(category_idStr) == true)) {
 			category_id = ParamUtil.checkAndParseInt(category_idStr);
 		}
 		
-		if(ParamUtil.isNullOrEmpty(description) == true ) {
-			request.setAttribute("productId", "IDは必須です");
-		} 
+		
+		if(ParamUtil.isNullOrEmpty(productIdStr) == true || ParamUtil.isNullOrEmpty(productName) == true || ParamUtil.isNullOrEmpty(priceStr) == true) {
+			request.setAttribute("msg", "");
+		}
 		
 		//ここでproductIdは取ってこれている。
-		System.out.println(category_id);
+		//System.out.println(category_id);
 		
 		//入力された情報をもとにproductのインスタンスを生成。
 		Product p = new Product(productId, category_id, productName, price, description);
 		
 		//ここでproductIdは取ってこれている。
-		System.out.println(p.getCategory_id());
+		//System.out.println(p.getCategory_id());
 		
 		//ProductServiceのインスタンスを生成して、registメソッド()呼び出す
 		result = new RegisterService().regist(p);
 		
-		System.out.println(result);
+		//System.out.println(result);
 		
 		request.setAttribute("msg", result);
 		

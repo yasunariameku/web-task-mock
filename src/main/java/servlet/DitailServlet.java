@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,14 +40,17 @@ public class DitailServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		
-		List<Product> result = null;
+		Product result = null;
 
 		
-		result = new SearchService().findById(result_id);
+		result = (Product) new SearchService().findById(result_id);
 		
 		request.setAttribute("result", result);
 		
 		session.setAttribute("result", result);
+		
+		
+		//System.out.println(session.getAttribute("result"));
 		
 		request.getRequestDispatcher("detail.jsp").forward(request, response);
 		

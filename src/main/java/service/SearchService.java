@@ -15,7 +15,7 @@ public class SearchService {
 	
 	List<Product> product = null;
 	
-	
+	Product productOne = null;
 	
 	//全件取得
 	public List<Product> findAll() {
@@ -55,21 +55,21 @@ public class SearchService {
 	
 	
 	//商品詳細の取得
-	public List<Product> findById(Integer id) {
+	public Product findById(Integer id) {
         try (Connection conn = DbUtil.getConnection()) {
         	
         	//ProductDaoのインスタンスを生成
         	ProductDao productDao = new ProductDao(conn);
         	//ProductDaoのインスタンスメソッドのfindByIdメソッドを呼び出す
-        	product = productDao.findById(id);
+        	productOne = productDao.findById(id);
         	
-            return product;
+            return productOne;
             
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return product;
+        return productOne;
 	}
 	
 	//

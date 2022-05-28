@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,17 +39,17 @@
           <div>
             <label class="required">商品ID</label>
             <input type="text" name="productId" class="base-text">
-            <c:if test="${not empty id_msg}"><p class="error">${id_msg}</p></c:if>
+            <span class="error"><c:if test="${not empty id_msg}"><p class="error">${id_msg}</p></c:if></span>
           </div>
           <div>
             <label class="required">商品名</label>
             <input type="text" name="productName" class="base-text">
-            <c:if test="${not empty name_msg}"><p class="error">${name_msg}</p></c:if>
+            <span class="error"><c:if test="${not empty id_msg}"><p class="error">${id_msg}</p></c:if></span>
           </div>
           <div>
             <label class="required">単価</label>
             <input type="text" name="price" class="base-text">
-            <c:if test="${not empty price_msg}"><p class="error">${price_msg}</p></c:if>
+            <span class="error"><c:if test="${not empty id_msg}"><p class="error">${id_msg}</p></c:if></span>
           </div>
           <div class="select_block">
             <label class="required">カテゴリ</label>

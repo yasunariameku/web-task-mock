@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import entity.Product;
 import service.SearchService;
@@ -39,6 +40,9 @@ public class SearchServlet extends HttpServlet {
 
 		String searchWord = request.getParameter("search");
 		
+		HttpSession session = request.getSession(true);
+		session.getAttribute("searchResult");
+		
 		List<Product> result = null;
 		
 		if (searchWord.equals("")) {
@@ -48,6 +52,10 @@ public class SearchServlet extends HttpServlet {
 			result = new SearchService().findAll();
 			
 			request.setAttribute("result", result);
+			
+			
+			session.setAttribute("searchResult", result.size());
+			//System.out.println(session.getAttribute("searchResult"));
 			
 			request.getRequestDispatcher("menu.jsp").forward(request, response);
 			
@@ -59,14 +67,12 @@ public class SearchServlet extends HttpServlet {
 			
 			request.setAttribute("result", result);
 			
+			session.setAttribute("searchResult", result.size());
+			
 			request.getRequestDispatcher("menu.jsp").forward(request, response);
 		}
 
 			
-			
-			
-				
-		
 	}
 
 	/**

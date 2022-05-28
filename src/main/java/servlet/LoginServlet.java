@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entity.Product;
 import entity.User;
 import service.LoginService;
+import service.SearchService;
 
 /**
  * Servlet implementation class LoginServlet
@@ -61,10 +63,13 @@ public class LoginServlet extends HttpServlet {
 		String name = null;
 		String idMatch = null;
 		String passMatch = null;
+		
+		List<Product> productResult = null;
 	
 		
 		HttpSession session = request.getSession(true);
 	
+		int searchResult = 0;
 		
 		
 		if (login_id == "") {
@@ -96,8 +101,16 @@ public class LoginServlet extends HttpServlet {
 				
 				name = result.get(0).getName();
 				session.setAttribute("name", name);
+			
+				session.setAttribute("searchResult", searchResult);
+				
+				productResult = new SearchService().findAll();
+				
+				request.setAttribute("result", productResult);
+				
 				request.getRequestDispatcher("menu.jsp").forward(request, response);
 			}
+			
 		
 	     
 	        request.getRequestDispatcher("menu.jsp").forward(request, response);

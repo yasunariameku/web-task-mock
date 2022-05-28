@@ -17,8 +17,11 @@ public class ProductDao {
 	    this.connection = connection;
 	}
 	
-	//DBから取得した値を入れるためのリスト（箱）
+	//DBから取得した値を入れるためのリスト
 	List<Product> list = new ArrayList<>();
+	
+	//DBから取得した値を入れるための変数
+	Product productOne = new Product();
 	
 	//全件取得
 	private static final String SQL_SELECT_ALL = "SELECT p.id,p.product_id, p.name, p.price, c.name AS category, p.description FROM products p INNER JOIN categories c ON p.category_id = c.id ORDER BY p.product_id";
@@ -83,7 +86,7 @@ public class ProductDao {
     private static final String SQL_SELECT_BY_PRODUCT_ID = "SELECT p.id, p.product_id, p.name, p.price, c.name AS category, p.description FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE p.id = ?";
 
 
-    public List<Product> findById(Integer id) {
+    public Product findById(Integer id) {
     	
     	
     	try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_PRODUCT_ID)) {
@@ -92,10 +95,10 @@ public class ProductDao {
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
-                list.add(new Product(rs.getInt("id"),rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("category"), rs.getString("description")));
+                productOne = new Product(rs.getInt("id"),rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("category"), rs.getString("description"));
             }
             
-            return list;
+            return productOne;
             
         } catch (SQLException e) {
         	e.printStackTrace();
@@ -121,7 +124,7 @@ public class ProductDao {
     		
             stmt.executeUpdate();
             
-            return "成功しました。";
+            return "更新処理が完了しました";
             
         } catch (SQLException e) {
         	e.printStackTrace();
@@ -131,21 +134,31 @@ public class ProductDao {
     	return null;
     }
     
-    //登録情報の更新
-    private static final String SQL_UPDATE = "UPDATE products SET product_name = ?, price = ? WHERE product_id = ?";
+    //更新
+    private static final String SQL_UPDATE = "UPDATE products SET product_id = ? category_id = ? product_name = ?, price = ? WHERE id = ? ";
     
     
-	public void update(Product product) {
+	public String update(Product product) {
+		
+		//System.out.println(product.getCategory_id());
 		try(PreparedStatement stmt = connection.prepareStatement(SQL_UPDATE)) {
-			stmt.setString(1, product.getProduct_name());
-			stmt.setInt(2, product.getPrice());
-			stmt.setInt(3, product.getProduct_id());
+			stmt.setInt(1, product.getProduct_id());
+			stmt.setInt(2, product.getCategory_id());
+			stmt.setString (3, product.getName());
+			stmt.setInt(4, product.getPrice());
+			stmt.setInt(5, product.getProduct_id());
 			
 			stmt.executeUpdate();
+			
+			
+			
+			return "登録が完了しました。";
 			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+		
+    	return null;
 	}
     
     

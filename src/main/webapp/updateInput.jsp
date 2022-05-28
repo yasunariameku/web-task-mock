@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,39 +25,36 @@
 
   <div class="insert">
     <div class="form_body">
-      <p class="error">エラーメッセージ</p>
-
-      <form action="menu.html" method="get">
+    <span class="error"><c:if test="${not empty msg}"><p class="error">${msg}</p></c:if></span>
+      <form action="UpdateServlet" method="post">
         <fieldset class="label-130">
           <div>
             <label>商品ID</label>
-            <input type="text" name="loginId" value="10001" class="base-text">
-            <span class="error">エラーメッセージ</span>
+            <input type="text" name="productId" value="${productDetail.getProduct_id()}" class="base-text">
+            <span class="error"><c:if test="${not empty id_msg}"><p class="error">${id_msg}</p></c:if></span>
           </div>
           <div>
             <label>商品名</label>
-            <input type="text" name="userName" value="マッキー(黒)" class="base-text">
-            <span class="error">エラーメッセージ</span>
+            <input type="text" name="productName" value="${productDetail.getName()}" class="base-text">
+            <span class="error"><c:if test="${not empty name_msg}"><p class="error">${name_msg}</p></c:if></span>
           </div>
           <div>
             <label>単価</label>
-            <input type="text" name="tel" value="165" class="base-text">
-            <span class="error">エラーメッセージ</span>
+            <input type="text" name="price" value="${productDetail.getPrice()}" class="base-text">
+            <span class="error"><c:if test="${not empty price_msg}"><p class="error">${price_msg}</p></c:if></span>
           </div>
           <div>
-            <label>カテゴリ</label> <select name="roleId" class="base-text">
-              <option value="1" selected>ペン</option>
-              <option value="2">ノート</option>
-              <option value="3">消しゴム</option>
-              <option value="4">のり</option>
+            <label>カテゴリ</label> <select name="category" class="base-text">
+              <option value="1">筆記具</option>
+              <option value="2">オフィス機器</option>
+              <option value="3">事務消耗品</option>
+              <option value="4">紙製品</option>
+              <option value="5">雑貨</option>
             </select>
           </div>
           <div>
             <label>商品説明</label>
-            <textarea name="description" class="base-text">
-ゼブラ株式会社
-線の太さ：太6.0mm、細1.5～2.0mm
-            </textarea>
+            <textarea name="description" class="base-text">${productDetail.getDescription()}</textarea>
           </div>
           <div>
             <label>画像</label>
@@ -65,7 +64,7 @@
         </fieldset>
           <div class="btns">
             <button type="button" onclick="openModal()" class="basic_btn">更新</button>
-            <input type="button" onclick="location.href='./menu.html'" value="メニューに戻る" class="cancel_btn">
+            <input type="button" onclick="location.href='Search?search='" value="メニューに戻る" class="cancel_btn">
           </div>
           <div id="modal">
             <p class="modal_message">更新しますか？</p>
