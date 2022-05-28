@@ -1,6 +1,8 @@
 package service;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 import dao.ProductDao;
 import entity.Product;
@@ -11,24 +13,38 @@ public class UpdateService {
 		public UpdateService() {
 		}
 		
-		String result = null;
+		List<Product> list = new ArrayList<>();
 		
-		public String update(Product product) {
+		Product productOne = new Product();
+		
+		public List<Product>  check(Integer id, Integer product_id){
 			try (Connection conn = DbUtil.getConnection()) {
 	        	
-	            //System.out.println(login_id);
-	        	//↑で引数の値を受け取れている。
-
-	        	
-	        	//Product p = new Product();
 	        	//UserDaoのインスタンスを生成
 	        	ProductDao productDao = new ProductDao(conn);
 	        	//ProductDaoのインスタンスメソッドのfindAllメソッドを呼び出す
-	        	result =  productDao.update(product);
+	        	list = productDao.check(id, product_id);
 	        	
-	        	//System.out.println(user.get(0).getName());
+	            return list;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 
-	            return result;
+	        return null;
+		
+		}
+		
+		String result = null;
+		
+		public Product update(Product product, Integer id) {
+			try (Connection conn = DbUtil.getConnection()) {
+	        	
+	        	//UserDaoのインスタンスを生成
+	        	ProductDao productDao = new ProductDao(conn);
+	        	//ProductDaoのインスタンスメソッドのfindAllメソッドを呼び出す
+	        	productOne =  productDao.update(product, id);
+	        	
+	            return productOne;
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }

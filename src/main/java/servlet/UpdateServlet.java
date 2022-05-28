@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,9 +49,6 @@ public class UpdateServlet extends HttpServlet {
 		productDetail = (Product) session.getAttribute("result");
 		
 		request.setAttribute("productDetail",productDetail);
-		
-
-		
 		request.getRequestDispatcher("updateInput.jsp").forward(request, response);
 	}
 
@@ -66,53 +65,38 @@ public class UpdateServlet extends HttpServlet {
 	
 		
 		Product productDetail = null;
+		Integer id = null;
 		
+		//更新前の値
 		productDetail = (Product) session.getAttribute("result");
+		id = productDetail.getId();
 		
-		System.out.println("ここはもともと入っている入力値が出力されるはず");
-		System.out.println(productDetail.getId());
-		System.out.println(productDetail.getProduct_id());
-		System.out.println(productDetail.getName());
-		System.out.println(productDetail.getCategory());
-		System.out.println(productDetail.getPrice());
-		System.out.println("ーーーーーーーーーーーーーーーーーーーー");
 		
+		//更新したい情報の入力値
 		String productIdStr = request.getParameter("productId");
 		String productName = request.getParameter("productName");
 		String priceStr = request.getParameter("price");
 		String categoryStr = request.getParameter("category");
 		String description = request.getParameter("description");
 		
-		System.out.println("ここはもともとの値がはいるのか？それともnullが入るのか？");
-		//productIdStr、productName、priceStr、descriptionは空文字が入っている。
-		System.out.println(productIdStr);
-		System.out.println(productName);
-		System.out.println(priceStr);
-		System.out.println(categoryStr);
-		System.out.println(description);
-		System.out.println("ーーーーーーーーーーーーーーーーーーーー");
-		
+		//入力値を数値型に変換するための変数
 		Integer productId = null;
 		Integer price = null;
 		Integer category_id = null;
 		
+		//更新処理をした時の結果を入れるための変数
 		String result = null;
 		
+		//商品IDが未入力だったとき
 		if(productIdStr.equals("")) {
 			request.setAttribute("id_msg", "商品IDは必須です");
 			request.getRequestDispatcher("updateInput.jsp").forward(request, response);
 
 		}else {
 			productId = Integer.parseInt(productIdStr);
-			System.out.println(productId);
-			
-			if (productId == productDetail.getProduct_id()) {
-				request.setAttribute("id_msg", "商品IDが一致していません");
-				request.getRequestDispatcher("updateInput.jsp").forward(request, response);
-
-			}
 		}
 		
+		//単価が未入力だったとき
 		if(priceStr.equals("")) {
 			request.setAttribute("price_msg", "単価は必須です");
 			request.getRequestDispatcher("updateInput.jsp").forward(request, response);
@@ -121,23 +105,45 @@ public class UpdateServlet extends HttpServlet {
 			price = Integer.parseInt(priceStr);
 		}
 		
+		//商品名が未入力だったとき
 		if(productName.equals("")) {
 			request.setAttribute("name_msg", "商品名は必須です");
 			request.getRequestDispatcher("updateInput.jsp").forward(request, response);
-
 		}
 		
 		if(!(ParamUtil.isNullOrEmpty(categoryStr)) == true ) {
 			category_id = Integer.parseInt(categoryStr);
 		}
 		
+		//System.out.println(productId);
+		
+		//Productのインスタンスを生成
+		Product p = new Product(productDetail.getId(),productId, productName, price, category_id,  description);
+		
+		//idが違う商品で商品IDが重複していないかどうかをチェックする
+		List<Product> list = new ArrayList<>();
+		
+		list = new UpdateService().check(id, productId);
 		
 		
-		Product p = new Product(productId, category_id, productName, price, description);
+		if(!(list.size() == 0)) {
+			request.setAttribute("msg", "他の商品IDと重複しています");
+			request.getRequestDispatcher("updateInput.jsp").forward(request, response);
+			
+
+			productDetail = (Product) session.getAttribute("result");
+			
+			request.setAttribute("productDetail",productDetail);
+		}
 		
-		result = new UpdateService().update(p);
+		//更新の処理
+		new UpdateService().update(p, id);
 		
-		request.setAttribute("msg",result);
+		productDetail = new UpdateService().update(p, id);
+		
+		session.setAttribute("result", productDetail);
+		
+		request.setAttribute("result",productDetail);
 		
 		request.getRequestDispatcher("detail.jsp").forward(request, response);
 	}

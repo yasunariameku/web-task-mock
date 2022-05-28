@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -52,7 +53,6 @@ public class RegisterServlet extends HttpServlet {
 		String category_idStr = request.getParameter("roleId");
 		String description = request.getParameter("description");
 		
-		System.out.println(category_idStr);
 		
 		String result = null;
 		
@@ -86,21 +86,27 @@ public class RegisterServlet extends HttpServlet {
 			request.setAttribute("msg", "");
 		}
 		
-		//ここでproductIdは取ってこれている。
-		//System.out.println(category_id);
+		//入力された商品IDがすでにある商品IDだった場合
+		List<Product> checkProductId = null; 
+		checkProductId  = new RegisterService().checkProductId(productId);
 		
-		//入力された情報をもとにproductのインスタンスを生成。
-		Product p = new Product(productId, category_id, productName, price, description);
-		
-		//ここでproductIdは取ってこれている。
-		//System.out.println(p.getCategory_id());
-		
-		//ProductServiceのインスタンスを生成して、registメソッド()呼び出す
-		result = new RegisterService().regist(p);
-		
-		//System.out.println(result);
-		
-		request.setAttribute("msg", result);
+		if (!(checkProductId == null)) {
+			request.setAttribute("msg", "商品IDが重複しています");
+			
+		}else {
+			//入力された情報をもとにproductのインスタンスを生成。
+			Product p = new Product(productId, category_id, productName, price, description);
+			
+			//ここでproductIdは取ってこれている。
+			//System.out.println(p.getCategory_id());
+			
+			//ProductServiceのインスタンスを生成して、registメソッド()呼び出す
+			result = new RegisterService().regist(p);
+			
+			//System.out.println(result);
+			
+			request.setAttribute("msg", result);
+		}
 		
 		request.getRequestDispatcher("insert.jsp").forward(request, response);
 		

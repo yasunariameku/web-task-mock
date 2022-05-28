@@ -29,7 +29,7 @@
       <div class="img_block">
         <img src="images/マッキー.png" class="product_img"><br>
       </div>
-      <form action="menu.jsp" method="get">
+      <form action="DeleteServlet" method="post">
         <fieldset class="label-130 product_block">
           <p class="error">エラーメッセージ</p>
           <div>

@@ -27,7 +27,7 @@
     <hr>
 
     <div class="btn"><a class="basic_btn regist" href="insert.jsp">新規登録</a></div>
-    <p>成功メッセージ</p>
+    <c:if test="${not empty msg}"><p class="error">${msg}</p></c:if>
     
     <!-- 検索機能 -->
     <form method="get" action="Search" class="search_container">

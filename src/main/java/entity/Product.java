@@ -32,6 +32,15 @@ public class Product {
 	    this.description = description;
 	}
 
+	public Product(Integer id, Integer product_id, String name, Integer price, Integer category_id, String description) {
+		this.id = id;
+	    this.product_id = product_id;
+	    this.name = name;
+	    this.category_id = category_id;
+	    this.price = price;
+	    this.description = description;
+	}
+
 	public Integer getId() {
 		return id;
 	}

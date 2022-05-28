@@ -71,7 +71,6 @@ public class ProductDao {
             	list.add(new Product(rs.getInt("id"), rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("category"), rs.getString("description")));
             }
             
-            //System.out.println(list.size());
             
             return list;
             
@@ -82,6 +81,61 @@ public class ProductDao {
     	return null;
         
     }
+    
+ // 更新時に商品IDが重複しているものを探すためのメソッド
+	
+ 	
+ 	private static final String SQL_SELECT_DUPL = "SELECT * FROM products WHERE id != ? AND product_id = ? ";
+ 	
+
+     public List<Product> check(Integer id, Integer product_id) {
+     	
+     	try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_DUPL)) {
+     		 stmt.setInt(1, id);
+    		 stmt.setInt(2, product_id);
+             ResultSet rs = stmt.executeQuery();
+             
+             while (rs.next()) {
+             	list.add(new Product(rs.getInt("id"), rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("category_id"), rs.getString("description")));
+             }
+             
+             return list;
+             
+         } catch (SQLException e) {
+         	e.printStackTrace();
+         }
+     	
+     	return null;
+         
+     }
+     
+     // 新規登録時に商品IDが重複しているものを探すためのメソッド
+ 	
+
+  	
+  	private static final String SQL_DUPL = "SELECT * FROM products WHERE product_id = ? ";
+  	
+
+      public List<Product> checkProductId(Integer product_id) {
+      	try (PreparedStatement stmt = connection.prepareStatement(SQL_DUPL)) {
+     		  stmt.setInt(1, product_id);
+              ResultSet rs = stmt.executeQuery();
+              
+              while (rs.next()) {
+              	list.add(new Product(rs.getInt("id"), rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("category_id"), rs.getString("description")));
+              }
+                           
+              return list;
+              
+          } catch (SQLException e) {
+          	e.printStackTrace();
+          }
+      	
+      	return null;
+          
+      }
+    
+    
     
     private static final String SQL_SELECT_BY_PRODUCT_ID = "SELECT p.id, p.product_id, p.name, p.price, c.name AS category, p.description FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE p.id = ?";
 
@@ -130,15 +184,14 @@ public class ProductDao {
         	e.printStackTrace();
         }
     	
-    	
     	return null;
     }
     
     //更新
-    private static final String SQL_UPDATE = "UPDATE products SET product_id = ? category_id = ? product_name = ?, price = ? WHERE id = ? ";
+    private static final String SQL_UPDATE = "UPDATE products SET product_id = ?, category_id = ?, name = ?, price = ? WHERE id = ? ";
     
     
-	public String update(Product product) {
+	public Product update(Product product, Integer id) {
 		
 		//System.out.println(product.getCategory_id());
 		try(PreparedStatement stmt = connection.prepareStatement(SQL_UPDATE)) {
@@ -146,13 +199,16 @@ public class ProductDao {
 			stmt.setInt(2, product.getCategory_id());
 			stmt.setString (3, product.getName());
 			stmt.setInt(4, product.getPrice());
-			stmt.setInt(5, product.getProduct_id());
+			stmt.setInt(5, id);
 			
 			stmt.executeUpdate();
 			
 			
+			productOne = new ProductDao(connection).findById(id);
 			
-			return "登録が完了しました。";
+			//System.out.println(productOne);
+			
+			return productOne;
 			
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -163,19 +219,26 @@ public class ProductDao {
     
     
     //登録情報の削除
-	private static final String SQL_DELETE = "DELETE FROM products WHERE product_name = ?";
+	private static final String SQL_DELETE = "DELETE FROM products WHERE id = ?";
     
     
-	public void delete(String product_name) {
+	public List<Product> delete(Integer id) {
 		try(PreparedStatement stmt = connection.prepareStatement(SQL_DELETE)){
-			stmt.setString(1, product_name);
+			stmt.setInt(1, id);
 			
 			stmt.executeUpdate();
+			
+			list = new ProductDao(connection).findAll();
+			
+			return list;
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-	}
+		
+		return null;
+		
+	} 
 
     
 }
