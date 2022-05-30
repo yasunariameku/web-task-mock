@@ -42,6 +42,7 @@ public class SearchServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession(true);
 		session.getAttribute("searchResult");
+		session.getAttribute("result");
 		
 		List<Product> result = null;
 		
@@ -53,6 +54,7 @@ public class SearchServlet extends HttpServlet {
 			
 			request.setAttribute("result", result);
 			
+			session.setAttribute("result", result);
 			
 			session.setAttribute("searchResult", result.size());
 			//System.out.println(session.getAttribute("searchResult"));
@@ -64,6 +66,8 @@ public class SearchServlet extends HttpServlet {
 			//System.out.println(searchStr);
 			
 			result = new SearchService().find(searchWord);
+			
+			session.setAttribute("result", result);
 			
 			request.setAttribute("result", result);
 			

@@ -35,19 +35,20 @@
       <button type="submit">検索</button> 
     </form>
 
+        <form method="get" action="SortServlet">
+        <div class="order">
+          <select class="base-text"name ="sort">
+            <option value="nomal">並び替え</option>
+            <option value="id">商品ID</option>
+            <option value="category">カテゴリ</option>
+            <option value="price_asc">単価：高い順</option>
+            <option value="price_desc">単価：安い順</option>
+          </select>
+          <button type="submit">並び替え</button> 
+        </div>
+        </form>
     <table>
         <div class="caption"><p>検索結果：${searchResult}件</p></div>
-        <div class="order">
-          <select class="base-text">
-            <option>並び替え</option>
-            <option>商品ID</option>
-            <option>カテゴリ</option>
-            <option>単価：安い順</option>
-            <option>単価：高い順</option>
-            <option>登録日：古い順</option>
-            <option>登録日：新しい順</option>
-          </select>
-        </div>
       <thead>
         <tr>
           <th>商品ID</th>
@@ -77,6 +78,7 @@
     const vie = new Vue({
       el: "#app",
       data: {
+    	selected:"",
         products: [
           {
             ID: "10001",
@@ -139,6 +141,17 @@
             category: "雑貨",
           },
         ]
+      },
+      methods: {
+    	  selectedOrderBy() {
+    		  if(this.selected === "product_id"){
+    			  this.products.sort((e1, e2) => e1.ID >= e2.ID ? 1 : -1);
+    		  }else if (selected === "price_asc") {
+    			  this.products.sort((e1, e2) => e1.price - e2.price);
+    		  }else if (selected === "price_desc"){
+    			  this.products.sort((e1, e2) => e2.price - e1.price);
+    		  }
+    	  }
       }
     })
 
